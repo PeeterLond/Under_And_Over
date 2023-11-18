@@ -69,13 +69,15 @@ public class DataProcessor {
 
     private static void setPlayerIllegalActionAndOperation(String[] playerData, Player player) {
         player.setIllegalAction(true);
+        ArrayList<String[]> illegalOperations = player.getIllegalOperations();
 
         if (playerData[1].equals("WITHDRAW")) {
             String[] modifiedPlayerData = {playerData[0], playerData[1], null, playerData[3], null};
-            player.setIllegalOperation(modifiedPlayerData);
+            illegalOperations.add(modifiedPlayerData);
         } else {
-            player.setIllegalOperation(playerData);
+            illegalOperations.add(playerData);
         }
+        player.setIllegalOperations(illegalOperations);
     }
 
     private static void handleBet(String[] playerData, Player player, Casino casino) {
@@ -113,6 +115,8 @@ public class DataProcessor {
                 } else if (match[3].equals("DRAW")) {
                     casino.setBalance(casino.getBalance() - betAmount);
                     player.setBalance(player.getBalance() + betAmount);
+                } else {
+                    player.setProfit(player.getProfit() - betAmount);
                 }
             }
         }
@@ -126,6 +130,7 @@ public class DataProcessor {
 
         casino.setBalance(casino.getBalance() - winAmount);
         player.setBalance(player.getBalance() + winAmount);
+        player.setProfit(player.getProfit() + (winAmount - betAmount));
         player.setNrOrWins(player.getNrOrWins() + 1);
     }
 

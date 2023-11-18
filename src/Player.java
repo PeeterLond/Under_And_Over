@@ -1,14 +1,24 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class Player {
 
     private String id;
     private long balance = 0;
+    private int profit = 0;
     private BigDecimal winRate;
     private int nrOfBets = 0;
     private int nrOrWins = 0;
     private boolean illegalAction = false;
-    private String[] illegalOperation;
+    private ArrayList<String[]> illegalOperations = new ArrayList<>();
+
+    public int getProfit() {
+        return profit;
+    }
+
+    public void setProfit(int profit) {
+        this.profit = profit;
+    }
 
     public int getNrOfBets() {
         return nrOfBets;
@@ -27,12 +37,12 @@ public class Player {
     }
 
 
-    public String[] getIllegalOperation() {
-        return illegalOperation;
+    public ArrayList<String[]> getIllegalOperations() {
+        return illegalOperations;
     }
 
-    public void setIllegalOperation(String[] illegalOperation) {
-        this.illegalOperation = illegalOperation;
+    public void setIllegalOperations(ArrayList<String[]> illegalOperations) {
+        this.illegalOperations = illegalOperations;
     }
 
     public boolean isIllegalAction() {
