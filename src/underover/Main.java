@@ -23,7 +23,6 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             try {
                 int userInput = ValidationService.getValidInteger(scanner.nextLine());
-
                 switch (userInput) {
                     case 1:
                         GameService.startGame();

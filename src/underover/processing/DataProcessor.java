@@ -6,15 +6,11 @@ import java.util.ArrayList;
 
 public class DataProcessor {
 
-
     public static void processBettingData() {
         ArrayList<String[]> playerData = FileHandler.getInputData(FilePath.PLAYER_FILE_PATH.getPath());
-
         Casino casino = new Casino();
-
-        ArrayList<Player> playerList = processAndGetPlayerList(playerData, casino);
-
-        FileHandler.outputResultFile(playerList, casino);
+        ArrayList<Player> players = processAndGetPlayerList(playerData, casino);
+        FileHandler.outputResultFile(players, casino);
     }
 
     private static ArrayList<Player> processAndGetPlayerList(ArrayList<String[]> playerData, Casino casino) {
@@ -25,7 +21,7 @@ public class DataProcessor {
             if (i == 0) {
                 player.setId(playerData.get(i)[0]);
                 handlePlayerAction(playerData.get(i), player, casino);
-            } else if (!playerData.get(i)[0].equals(playerData.get(i - 1)[0])) {
+            } else if (isNewPlayer(playerData, i)) {
                 playerList.add(player);
                 player = new Player();
                 player.setId(playerData.get(i)[0]);
@@ -36,6 +32,10 @@ public class DataProcessor {
         }
         playerList.add(player);
         return playerList;
+    }
+
+    private static boolean isNewPlayer(ArrayList<String[]> playerData, int i) {
+        return !playerData.get(i)[0].equals(playerData.get(i - 1)[0]);
     }
 
     private static void handlePlayerAction(String[] playerData, Player player, Casino casino) {

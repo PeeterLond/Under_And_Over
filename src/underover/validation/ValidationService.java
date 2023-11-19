@@ -25,7 +25,6 @@ public class ValidationService {
             } else {
                 throw new Exception("Enter a valid bet name higher or lower");
             }
-
             int amount = Integer.parseInt(inputSplit[1]);
             bet.setAmount(amount);
             FileHandler.addBetToPlayerData(player, newMatchId, bet);

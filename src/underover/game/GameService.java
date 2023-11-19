@@ -52,9 +52,9 @@ public class GameService {
                 
                 Gameplay:
                 A random number between 4 and 9 is chosen at the start.
-                Players bet on whether the total sum of two dice will be higher or lower than the random number chosen.
+                Players bet on whether the total sum of two dice will be higher or lower than the generated number.
                 Winning occurs if the guessed outcome matches the dice sum compared to the chosen number.
-                It's a draw when you roll the same dice sum as the random number chosen.
+                It's a draw when you roll the same dice sum as the generated number.
                 
                 Betting:
                 To place a bet write: higher/lower and the bet amount, ex. higher 100, lower 10

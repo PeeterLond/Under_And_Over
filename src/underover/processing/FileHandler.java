@@ -22,14 +22,14 @@ public class FileHandler {
         return data;
     }
 
-    public static void outputResultFile(ArrayList<Player> playerList, Casino casino) {
+    public static void outputResultFile(ArrayList<Player> players, Casino casino) {
         ArrayList<Player> legitPlayers = new ArrayList<>();
         ArrayList<Player> illegalPlayers = new ArrayList<>();
 
-        for (Player player : playerList) {
+        for (Player player : players) {
             if (player.isIllegalAction()) {
                 illegalPlayers.add(player);
-//                handleIllegalActionSettlement(casino, player);
+                handleIllegalActionSettlement(casino, player);
             } else {
                 legitPlayers.add(player);
             }
