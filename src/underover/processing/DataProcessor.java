@@ -1,14 +1,14 @@
+package underover.processing;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class DataProcessor {
 
-    static final String PLAYER_FILE_PATH = "./resources/player_data.txt";
-    static final String MATCH_FILE_PATH = "./resources/match_data.txt";
 
     public static void processBettingData() {
-        ArrayList<String[]> playerData = FileHandler.getInputData(PLAYER_FILE_PATH);
+        ArrayList<String[]> playerData = FileHandler.getInputData(FilePath.PLAYER_FILE_PATH.getPath());
 
         Casino casino = new Casino();
 
@@ -106,7 +106,7 @@ public class DataProcessor {
         String matchId = playerData[2];
         int betAmount = Integer.parseInt(playerData[3]);
 
-        ArrayList<String[]> matchData = FileHandler.getInputData(MATCH_FILE_PATH);
+        ArrayList<String[]> matchData = FileHandler.getInputData(FilePath.MATCH_FILE_PATH.getPath());
 
         for (String[] match : matchData) {
             if (match[0].equals(matchId)) {

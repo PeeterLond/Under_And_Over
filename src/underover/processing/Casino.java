@@ -1,3 +1,5 @@
+package underover.processing;
+
 public class Casino {
 
     private long balance = 0;

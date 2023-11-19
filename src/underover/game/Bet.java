@@ -1,5 +1,5 @@
+package underover.game;
 public class Bet {
-
     private String name;
     private int amount;
 

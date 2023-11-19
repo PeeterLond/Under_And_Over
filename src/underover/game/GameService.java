@@ -1,3 +1,8 @@
+package underover.game;
+
+import underover.processing.Player;
+import underover.processing.FileHandler;
+import underover.validation.ValidationService;
 import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.UUID;
@@ -10,7 +15,6 @@ public class GameService {
 
     public static void startGame() {
         boolean isOn = true;
-
         while (isOn) {
             System.out.println(IMAGES.getLogo());
             System.out.println("\nWelcome to the Under and Over betting game!\n");
@@ -109,6 +113,7 @@ public class GameService {
             int depositAmount = ValidationService.getValidInteger(SCANNER.nextLine());
             player.setBalance(player.getBalance() + depositAmount);
             System.out.println("\nYou deposited: " + depositAmount);
+            FileHandler.addActionToPlayerData(player, depositAmount, "DEPOSIT");
             System.out.print("\nHit Enter to continue: ");
             SCANNER.nextLine();
         } catch (Exception e) {
@@ -121,6 +126,7 @@ public class GameService {
         System.out.print("Enter the amount of credits you wish to withdraw: ");
         try {
             int withdrawAmount = ValidationService.getValidInteger(SCANNER.nextLine());
+            FileHandler.addActionToPlayerData(player, withdrawAmount, "WITHDRAW");
             if (withdrawAmount > player.getBalance()) {
                 throw new Exception("Cannot withdraw: " + withdrawAmount + ". Insufficient funds on your balance");
             } else {
@@ -136,25 +142,24 @@ public class GameService {
 
     private static void playGame(Player player) {
         String newMatchId = UUID.randomUUID().toString();
-
         int underOverNr = getUnderOverNr();
         BetRatio betRatio = getCurrentBetRatio(underOverNr);
 
         System.out.println("\nWill the dice throw be higher or lower than: " + underOverNr);
-        System.out.println("\nHigher ratio: " + betRatio.getHigherRatio() + ", Lower ratio: " + betRatio.getLowerRatio());
+        System.out.println("\nLower ratio: " + betRatio.getLowerRatio() + ", Higher ratio: " + betRatio.getHigherRatio());
         System.out.println("Your current balance is: " + player.getBalance());
         System.out.println("\nPlace you bet 'higher/lower amount': ");
 
         try {
-            Bet bet = ValidationService.getValidBet(SCANNER.nextLine(), player);
+            Bet bet = ValidationService.getValidBet(SCANNER.nextLine(), player, newMatchId);
             player.setBalance(player.getBalance() - bet.getAmount());
-            throwDiceAndHandleOutcome(player, underOverNr, bet, betRatio);
+            throwDiceAndHandleOutcome(player, underOverNr, bet, betRatio, newMatchId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private static void throwDiceAndHandleOutcome(Player player, int underOverNr, Bet bet, BetRatio betRatio) {
+    private static void throwDiceAndHandleOutcome(Player player, int underOverNr, Bet bet, BetRatio betRatio, String newMatchId) {
         int diceThrowSum = throwDice();
         System.out.println("UnderOverNr :"+ underOverNr +", Thrown dice sum: " + diceThrowSum);
 
@@ -164,19 +169,20 @@ public class GameService {
         } else {
             outcome = "lower";
         }
-        System.out.println("outcome: " + outcome);
         if (diceThrowSum == underOverNr) {
-            handleDraw(player, bet);
+            outcome = handleDraw(player, bet);
         } else if (bet.getName().equals(outcome)) {
             handleWin(player, bet, betRatio);
         } else {
             System.out.println("You Lose");
         }
+        FileHandler.addDataToMatchData(newMatchId, betRatio, outcome);
     }
 
-    private static void handleDraw(Player player, Bet bet) {
+    private static String handleDraw(Player player, Bet bet) {
         System.out.println("It's a draw");
         player.setBalance(player.getBalance() + bet.getAmount());
+        return "DRAW";
     }
 
     private static void handleWin(Player player, Bet bet, BetRatio betRatio) {

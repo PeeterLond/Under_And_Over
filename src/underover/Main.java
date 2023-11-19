@@ -1,3 +1,9 @@
+package underover;
+
+import underover.game.GameService;
+import underover.processing.DataProcessor;
+import underover.validation.ValidationService;
+
 import java.util.Scanner;
 
 public class Main {
@@ -24,7 +30,7 @@ public class Main {
                         break;
                     case 2:
                         DataProcessor.processBettingData();
-                        System.out.println("result.txt has been created in the src folder.");
+                        System.out.println("result.txt has been created in the underOver folder.");
                         break;
                     case 3:
                         isOn = false;

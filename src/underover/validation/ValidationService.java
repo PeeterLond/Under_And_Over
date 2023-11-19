@@ -1,3 +1,9 @@
+package underover.validation;
+
+import underover.game.Bet;
+import underover.processing.FileHandler;
+import underover.processing.Player;
+
 public class ValidationService {
 
     public static int getValidInteger(String input) throws Exception {
@@ -8,7 +14,7 @@ public class ValidationService {
         }
     }
 
-    public static Bet getValidBet(String input, Player player) throws Exception {
+    public static Bet getValidBet(String input, Player player, String newMatchId) throws Exception {
         String[] inputSplit = input.split(" ");
         Bet bet = new Bet();
         try {
@@ -21,12 +27,11 @@ public class ValidationService {
             }
 
             int amount = Integer.parseInt(inputSplit[1]);
+            bet.setAmount(amount);
+            FileHandler.addBetToPlayerData(player, newMatchId, bet);
             if (amount > player.getBalance()) {
                 throw new Exception("Entered amount is higher than your current balance, deposit more coins.");
-            } else {
-                bet.setAmount(amount);
             }
-
         } catch (NumberFormatException e) {
             throw new Exception("Enter a valid bet amount in numbers");
         }
